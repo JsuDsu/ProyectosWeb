@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NeonGamer — Tienda Gamer</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="description" content="Ecommerce minimalista y futurista para productos gamer. Carrito con persistencia y contacto por WhatsApp." />
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <header class="header">
+    <div class="container header-row">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+  <img src="img/gamepad.png" alt="Gamepad Icon" width="24" height="24" />
+</div>
+
+        <div class="brand-name">NeonGamer</div>
+      </div>
+
+      <div class="search">
+        <div class="search-inner">
+          <span class="search-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <circle cx="11" cy="11" r="7" stroke="#a1a1aa" stroke-width="1.5"/><path d="M20 20l-3-3" stroke="#a1a1aa" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <label class="sr-only" for="search">Buscar productos</label>
+          <input id="search" type="search" placeholder="Buscar productos..." autocomplete="off" />
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="open-cart" class="btn" aria-label="Abrir carrito">
+  <img src="img/shopping-cart.png" alt="Ícono de carrito" width="20" height="20" />
+  Carrito <span id="cart-count" class="badge" aria-live="polite" aria-atomic="true">0</span>
+</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div style="max-width:640px">
+        <h1>Potencia tu setup.<span class="accent-text">Estilo del futuro.</span></h1>
+        <p>Componentes y periféricos gamer de alto rendimiento con un diseño minimalista y futurista.</p>
+        <div class="meta">
+          <span class="pulse" aria-hidden="true"></span>
+          Envíos 24–48h <span aria-hidden="true">•</span> Devoluciones sencillas <span aria-hidden="true">•</span> Garantía oficial
+        </div>
+      </div>
+      <img id="hero-img" class="hero-img" src="img/setup.jpg" alt="Setup gamer futurista con iluminación neón" />
+
+    </section>
+
+    <section class="section-head">
+      <div>
+        <h2>Productos destacados</h2>
+        <div class="section-sub">Selecciona tus favoritos y añádelos al carrito.</div>
+      </div>
+    </section>
+
+    <section id="products" class="grid" aria-label="Listado de productos"></section>
+
+    <div class="separator" role="separator" aria-hidden="true"></div>
+
+    <section aria-labelledby="whatsapp-title">
+      <div class="wa-card">
+        <div class="wa-head">
+          <span class="wa-icon" aria-hidden="true">
+  <img src="img/phone-message.png" alt="WhatsApp Icon" width="20" height="20" />
+</span>
+
+          <h3 id="whatsapp-title" style="margin:0;font-size:18px">¿Necesitas ayuda?</h3>
+        </div>
+        <p class="wa-desc">Nuestro equipo responde al instante por WhatsApp. Cuéntanos qué necesitas y te asesoramos.</p>
+        <div class="wa-actions">
+          <a id="wa-link" class="btn-wa" target="_blank" rel="noopener">
+            Abrir WhatsApp
+          </a>
+          <p class="note">Horario: L–V 9:00–18:00. Contacto: <span id="wa-number">
+        </div>
+      </div>
+    </section>
+    <div style="height:96px"></div>
+  </main>
+
+   <!--Floating WhatsApp--> 
+  <div class="fab">
+  <button id="wa-fab" title="WhatsApp" aria-label="Abrir chat de WhatsApp">
+    <img src="img/phone-message.png" alt="WhatsApp" width="24" height="24" />
+    <span class="sr-only">Contactar por WhatsApp</span>
+  </button>
+</div>
+
+
+   <!--Cart--> 
+  <div id="overlay" class="overlay" aria-hidden="true"></div>
+  <aside id="drawer" class="drawer" aria-labelledby="drawer-title" aria-modal="true" role="dialog">
+    <div class="drawer-header">
+      <h4 id="drawer-title" class="drawer-title">Tu carrito</h4>
+      <p class="drawer-sub" id="drawer-sub">Aún no has añadido productos.</p>
+    </div>
+    <div class="drawer-body">
+      <div id="cart-list" class="cart-list" aria-live="polite"></div>
+      <button id="clear-cart" class="btn-link" style="display:none; margin-top: 15px;">Vaciar carrito</button>
+    </div>
+    <div class="drawer-footer">
+      <div class="totals">
+        <div class="row"><span>Subtotal</span><span id="subtotal">$0.00</span></div>
+        <div class="row"><span>Envío</span><span>Calculado al finalizar</span></div>
+        <div class="grand"><span>Total</span><span id="grand">$0.00</span></div>
+      </div>
+      <button class="btn-checkout" id="checkout">Finalizar compra</button>
+      <p class="note" style="text-align:center">Al continuar aceptas nuestros términos y políticas.</p>
+    </div>
+  </aside>
+
+<!--Checkout Modal--> 
+  <div id="checkout-overlay" class="overlay" aria-hidden="true"></div>
+  <section id="checkout-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="co-title">
+    <div class="panel" id="checkout-panel">
+      <div class="co-header">
+        <h4 id="co-title" class="co-title">Finalizar compra</h4>
+        <button class="co-close" id="co-close" aria-label="Cerrar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" stroke="#a1a1aa" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="co-body" id="co-body">
+         
+        <!--Form--> 
+        <form id="checkout-form" class="cardish" novalidate>
+          <h5 class="co-section-title">Datos de contacto y envío</h5>
+          <div class="form-grid">
+            <div class="grid-2" style="grid-template-columns:1fr 1fr">
+              <div class="field" id="f-firstName">
+                <label class="label" for="firstName">Nombre</label>
+                <input class="input" id="firstName" name="firstName" autocomplete="given-name" required />
+                <span class="error">Ingresa tu nombre</span>
+              </div>
+              <div class="field" id="f-lastName">
+                <label class="label" for="lastName">Apellidos</label>
+                <input class="input" id="lastName" name="lastName" autocomplete="family-name" required />
+                <span class="error">Ingresa tus apellidos</span>
+              </div>
+            </div>
+            <div class="grid-2" style="grid-template-columns:1fr 1fr">
+              <div class="field" id="f-email">
+                <label class="label" for="email">Correo electrónico</label>
+                <input class="input" id="email" name="email" type="email" autocomplete="email" required />
+                <span class="error">Ingresa un correo válido</span>
+              </div>
+              <div class="field" id="f-phone">
+                <label class="label" for="phone">Teléfono</label>
+                <input class="input" id="phone" name="phone" type="tel" inputmode="tel" pattern="[0-9()+\\-\\s]{7,}" placeholder="Ej: 5512345678" required />
+                <span class="error">Ingresa un teléfono válido</span>
+              </div>
+            </div>
+            <div class="field" id="f-address1">
+              <label class="label" for="address1">Dirección</label>
+              <input class="input" id="address1" name="address1" autocomplete="address-line1" required />
+              <span class="error">Ingresa tu dirección</span>
+            </div>
+            <div class="grid-2" style="grid-template-columns:2fr 1fr">
+              <div class="field">
+                <label class="label" for="address2">Apto, piso, referencias (opcional)</label>
+                <input class="input" id="address2" name="address2" autocomplete="address-line2" />
+              </div>
+              <div class="field" id="f-postalCode">
+                <label class="label" for="postalCode">Código postal</label>
+                <input class="input" id="postalCode" name="postalCode" inputmode="numeric" pattern="[0-9]{4,10}" required />
+                <span class="error">Ingresa un CP válido</span>
+              </div>
+            </div>
+            <div class="grid-2" style="grid-template-columns:1fr 1fr">
+              <div class="field" id="f-city">
+                <label class="label" for="city">Ciudad</label>
+                <input class="input" id="city" name="city" autocomplete="address-level2" required />
+                <span class="error">Ingresa tu ciudad</span>
+              </div>
+              <div class="field" id="f-state">
+                <label class="label" for="state">Estado/Provincia</label>
+                <input class="input" id="state" name="state" autocomplete="address-level1" required />
+                <span class="error">Ingresa tu estado/provincia</span>
+              </div>
+            </div>
+            <div class="grid-2" style="grid-template-columns:1fr 1fr">
+              <div class="field" id="f-country">
+                <label class="label" for="country">País</label>
+                <select class="select" id="country" name="country" required>
+                  <option value="">Selecciona un país</option>
+                  <option value="MX" selected>México</option>
+                  <option value="AR">Argentina</option>
+                  <option value="CL">Chile</option>
+                  <option value="CO">Colombia</option>
+                  <option value="ES">España</option>
+                  <option value="PE">Perú</option>
+                </select>
+                <span class="error">Selecciona tu país</span>
+              </div>
+              <div class="field">
+                <label class="label" for="notes">Notas (opcional)</label>
+                <input class="input" id="notes" name="notes" placeholder="Instrucciones de entrega..." />
+              </div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <h5 class="co-section-title">Método de envío</h5>
+          <div class="method" id="shipping-method">
+            <label class="opt">
+              <input type="radio" name="shipping" value="standard" data-cost="99" checked />
+              <span>Estándar (24–72h) — $99.00</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="shipping" value="express" data-cost="199" />
+              <span>Express (24h) — $199.00</span>
+            </label>
+          </div>
+
+          <div class="divider"></div>
+
+          <h5 class="co-section-title">Pago</h5>
+          <div class="method" id="payment-method">
+            <label class="opt">
+              <input type="radio" name="payment" value="card" checked />
+              <span>Tarjeta de crédito/débito</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="payment" value="transfer" />
+              <span>Transferencia / Depósito</span>
+            </label>
+            <label class="opt">
+              <input type="radio" name="payment" value="cod" />
+              <span>Contra reembolso</span>
+            </label>
+          </div>
+
+          <div id="card-fields" class="cardish" style="margin-top:10px">
+            <div class="grid-2" style="grid-template-columns:1fr">
+              <div class="field" id="f-cardName">
+                <label class="label" for="cardName">Nombre en la tarjeta</label>
+                <input class="input" id="cardName" name="cardName" autocomplete="cc-name" />
+                <span class="error">Ingresa el nombre como aparece en la tarjeta</span>
+              </div>
+              <div class="field" id="f-cardNumber">
+                <label class="label" for="cardNumber">Número de tarjeta</label>
+                <input class="input" id="cardNumber" name="cardNumber" inputmode="numeric" autocomplete="cc-number" placeholder="1234 5678 9012 3456" />
+                <span class="error">Ingresa un número de tarjeta válido</span>
+              </div>
+              <div class="grid-2" style="grid-template-columns:1fr 1fr">
+                <div class="field" id="f-expiry">
+                  <label class="label" for="expiry">Vencimiento (MM/AA)</label>
+                  <input class="input" id="expiry" name="expiry" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/AA" />
+                  <span class="error">Ingresa un vencimiento válido</span>
+                </div>
+                <div class="field" id="f-cvc">
+                  <label class="label" for="cvc">CVC</label>
+                  <input class="input" id="cvc" name="cvc" inputmode="numeric" autocomplete="cc-csc" placeholder="123" />
+                  <span class="error">Ingresa un CVC válido</span>
+                </div>
+              </div>
+              <p class="hint">Esta es una demostración. No se procesa ningún pago real.</p>
+            </div>
+          </div>
+
+          <div class="co-actions">
+            <button type="button" class="btn-secondary" id="co-cancel">Seguir comprando</button>
+            <button type="submit" class="btn-primary-lg" id="co-submit">Confirmar pedido</button>
+          </div>
+        </form>
+
+         <!--Summary--> 
+        <aside class="cardish summary" id="summary">
+          <h5 class="co-section-title">Resumen del pedido</h5>
+          <div id="summary-items" class="items"></div>
+          <div class="divider"></div>
+          <div class="summary-row"><span>Subtotal</span><span id="sum-subtotal">$0.00</span></div>
+          <div class="summary-row"><span>Envío</span><span id="sum-shipping">$0.00</span></div>
+          <div class="summary-total"><span>Total</span><span id="sum-total">$0.00</span></div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+
+<footer class="footer">
+  <p>&copy; 2025 Neon Setup. Todos los derechos reservados. Villarreal Jesus</p>
+  <p>
+    <a href="https://wa.me/573113093561" target="_blank">WhatsApp</a> |
+    <a href="mailto:jesuka0302@gmail.com">Correo</a>
+  </p>
+</footer>
+
+</html>
